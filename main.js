@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen } = require("electron");
+const { app, BrowserWindow, screen, ipcMain } = require("electron");
 const path = require("path");
 
 function createWindow () {
@@ -17,11 +17,10 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      preload: path.join(__dirname, "/app", "/preload.js")
+      preload: path.join(__dirname, "app", "preload.js")
     }
   });
 
-  win.setMenu(null);
   win.loadFile("app/index.html");
 
   win.on('closed', () => {
@@ -41,4 +40,8 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.on("quit", () => {
+  app.quit();
 });
