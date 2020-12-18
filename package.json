@@ -1,0 +1,43 @@
+{
+  "name": "imageviewer",
+  "version": "0.0.1",
+  "description": "A solid, minimalistic and fast image viewer. Implemented as electron app.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electron-packager": "latest"
+  },
+  "build": {
+    "appId": "electronImageViewer",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "target": [
+        "zip"
+      ],
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timlg07/imageViewer.git"
+  },
+  "author": "Tim L. Greller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timlg07/imageViewer/issues"
+  },
+  "homepage": "https://github.com/timlg07/imageViewer#readme"
+}
