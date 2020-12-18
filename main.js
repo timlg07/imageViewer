@@ -10,7 +10,7 @@ function createWindow () {
     }
   });
 
-  win.loadURL('https://google.com');
+  win.loadFile("app/index.html");
 }
 
 app.whenReady().then(createWindow);
