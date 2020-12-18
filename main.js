@@ -1,16 +1,32 @@
-const { app, BrowserWindow, screen } = require('electron');
+const { app, BrowserWindow, screen } = require("electron");
+const path = require("path");
 
 function createWindow () {
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize
-  const win = new BrowserWindow({
-    width: width,
-    height: height,
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+  let win = new BrowserWindow({
+    title: "imageViewer",
+    icon: "resources/imageViewer.png",
+    position: "center",
+    width: width / 2,
+    x: width / 4,
+    height: height / 2,
+    y: height / 4,
+    resizable: true,
+    frame: false,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      preload: path.join(__dirname, "/app", "/preload.js")
     }
   });
 
+  win.setMenu(null);
   win.loadFile("app/index.html");
+
+  win.on('closed', () => {
+    win = null;
+  });
 }
 
 app.whenReady().then(createWindow);

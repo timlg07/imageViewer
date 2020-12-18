@@ -39,5 +39,8 @@
   "bugs": {
     "url": "https://github.com/timlg07/imageViewer/issues"
   },
-  "homepage": "https://github.com/timlg07/imageViewer#readme"
+  "homepage": "https://github.com/timlg07/imageViewer#readme",
+  "dependencies": {
+    "custom-electron-titlebar": "^3.2.5"
+  }
 }
