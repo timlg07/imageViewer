@@ -12,7 +12,7 @@ function createWindow() {
     /* Create the main browser-window. */
     let win = new BrowserWindow({
         title: "imageViewer",
-        icon: "./resources/imageViewer.png",
+        icon: path.join(__dirname, "resources", "imageViewer.png"),
         frame: false,
 
         position: "center",
@@ -30,7 +30,7 @@ function createWindow() {
         }
     });
 
-    win.loadFile("app/index.html");
+    win.loadFile(path.join(__dirname, "app", "index.html"));
 
     win.on('closed', () => {
         /* Dereference the main window object when terminated. */
