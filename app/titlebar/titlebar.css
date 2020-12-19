@@ -2,6 +2,7 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/* Hide the titlebar in fullscreen mode. */
 body.fullscreen .titlebar {
     display: none;
 }
