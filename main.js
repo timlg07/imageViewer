@@ -19,6 +19,7 @@ function createWindow() {
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: true,
             enableRemoteModule: true,
             preload: path.join(__dirname, "app", "preload.js")
         }
@@ -36,7 +37,7 @@ function createWindow() {
         });
     });
 
-    localShortcut.register(win, "escape", () => win.setFullScreen(false));
+    localShortcut.register(win, "Escape", () => win.setFullScreen(false));
 }
 
 app.whenReady().then(createWindow);

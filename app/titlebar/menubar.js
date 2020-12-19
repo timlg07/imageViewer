@@ -1,4 +1,4 @@
-const { remote, ipcRenderer } = require("electron");
+const { remote } = require("electron");
 
 module.exports = {
     createMenu() {
@@ -15,7 +15,7 @@ module.exports = {
         menu.append(new remote.MenuItem({
             label: 'View',
             submenu: [
-                { role: 'togglefullscreen' },
+                { role: 'togglefullscreen', label: 'Fullscreen (Exit with escape)' },
                 { type: 'separator' },
                 { role: 'resetZoom' },
                 { role: 'zoomIn' },
