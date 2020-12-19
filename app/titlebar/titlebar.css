@@ -9,5 +9,5 @@ body.fullscreen .titlebar {
 
 /* As the titlebar is now hidden, the content can take up the whole space. */
 body.fullscreen .container-after-titlebar {
-    top: 0;
+    top: 0 !important;
 }
