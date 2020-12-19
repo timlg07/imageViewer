@@ -1,14 +1,12 @@
 const { app, BrowserWindow, screen, globalShortcut } = require("electron");
-const { stat } = require("fs");
+const localShortcut = require('electron-localshortcut');
 const path = require("path");
-
-let win;
 
 function createWindow() {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
     const renderForwardEvents = ['enter-full-screen', 'leave-full-screen'];
 
-    win = new BrowserWindow({
+    let win = new BrowserWindow({
         title: "imageViewer",
         icon: "resources/imageViewer.png",
         position: "center",
@@ -38,7 +36,7 @@ function createWindow() {
         });
     });
 
-    globalShortcut.register("escape", () => win.setFullScreen(false));
+    localShortcut.register(win, "escape", () => win.setFullScreen(false));
 }
 
 app.whenReady().then(createWindow);

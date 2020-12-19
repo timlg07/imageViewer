@@ -41,6 +41,7 @@
     },
     "homepage": "https://github.com/timlg07/imageViewer#readme",
     "dependencies": {
-        "custom-electron-titlebar": "^3.2.5"
+        "custom-electron-titlebar": "^3.2.5",
+        "electron-localshortcut": "^3.2.1"
     }
 }
