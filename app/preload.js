@@ -1,10 +1,13 @@
-const customTitlebar = require('custom-electron-titlebar');
+const { Titlebar, Themebar } = require('custom-electron-titlebar');
 const { createMenu } = require("./menubar");
 
 window.addEventListener('DOMContentLoaded', () => {
-    new customTitlebar.Titlebar({
+    const isWin = (process.platform === "win32");
+    const theme = isWin ? Themebar.win : Themebar.mac;
+
+    new Titlebar({
         menu: createMenu(),
-        titleHorizontalAlignment: "center",
-        unfocusEffect: false
+        iconsTheme: theme,
+        icon: "./../resources/imageViewer.png"
     });
 });
