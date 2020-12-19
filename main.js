@@ -18,6 +18,8 @@ function createWindow() {
         position: "center",
         width:  width  * .75,
         height: height * .75,
+        minWidth: 380,
+        minHeight: 210,
         resizable: true,
 
         webPreferences: {
