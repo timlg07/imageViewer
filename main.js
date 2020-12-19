@@ -1,10 +1,14 @@
-const { app, BrowserWindow, screen, ipcMain } = require("electron");
+const { app, BrowserWindow, screen, globalShortcut } = require("electron");
+const { stat } = require("fs");
 const path = require("path");
+
+let win;
 
 function createWindow() {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    const renderForwardEvents = ['enter-full-screen', 'leave-full-screen'];
 
-    let win = new BrowserWindow({
+    win = new BrowserWindow({
         title: "imageViewer",
         icon: "resources/imageViewer.png",
         position: "center",
@@ -14,6 +18,7 @@ function createWindow() {
         y: height / 4,
         resizable: true,
         frame: false,
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
@@ -26,6 +31,14 @@ function createWindow() {
     win.on('closed', () => {
         win = null;
     });
+
+    renderForwardEvents.forEach(event => {
+        win.on(event, () => {
+            win.webContents.send(event);
+        });
+    });
+
+    globalShortcut.register("escape", () => win.setFullScreen(false));
 }
 
 app.whenReady().then(createWindow);

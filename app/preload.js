@@ -1,5 +1,5 @@
 const { Titlebar, Themebar } = require('custom-electron-titlebar');
-const { createMenu } = require("./menubar");
+const { createMenu } = require("./titlebar/menubar");
 
 window.addEventListener('DOMContentLoaded', () => {
     const isWin = (process.platform === "win32");

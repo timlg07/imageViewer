@@ -1,0 +1,7 @@
+.titlebar {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body.fullscreen .titlebar {
+    display: none;
+}
