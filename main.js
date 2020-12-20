@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen, globalShortcut } = require("electron");
+const { app, BrowserWindow, screen } = require("electron");
 const localShortcut = require('electron-localshortcut');
 const path = require("path");
 
