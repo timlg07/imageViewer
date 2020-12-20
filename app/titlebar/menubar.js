@@ -11,10 +11,12 @@ module.exports = {
                 { 
                     label: 'Next Image',
                     click: () => switchImage(currentImageIndex + 1),
+                    accelerator: '>'
                 },
                 { 
                     label: 'Previous Image',
                     click: () => switchImage(currentImageIndex - 1),
+                    accelerator: '<'
                 },
                 { type: 'separator' },
                 { role: isMac ? 'close' : 'quit' }
