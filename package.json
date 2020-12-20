@@ -14,7 +14,7 @@
         "electron-packager": "latest"
     },
     "build": {
-        "appId": "electronImageViewer",
+        "appId": "de.tim-greller.imageViewer",
         "directories": {
             "output": "dist"
         },
