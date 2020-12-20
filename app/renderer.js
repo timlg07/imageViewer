@@ -36,25 +36,33 @@ function isImage(filePath) {
     return ext && supportedExtensions.indexOf(ext) >= 0;
 }
 
-function scaleCanvas() {
+function scaleCanvas(runtwice = true) {
     const containerRect = imageContainer.getBoundingClientRect();
     const availableWidth  = containerRect.width;
     const availableHeight = containerRect.height;
     const imageWidth  = imageCanvas.width;
     const imageHeight = imageCanvas.height;
 
+    console.log("available: h="+availableHeight+", w="+availableWidth);
+
     let scalingRatio = availableWidth / imageWidth;
     let scaledHeight = imageHeight * scalingRatio;
+
+    // console.log("scaled per width: h=" + scaledHeight + ", w=" + (imageWidth * scalingRatio));
 
     if (scaledHeight > availableHeight) {
         scalingRatio = availableHeight / imageHeight;
         scaledHeight = imageHeight * scalingRatio;
+        // console.log("scaled per height: h=" + scaledHeight + ", w=" + (imageWidth * scalingRatio));
     }
 
     let scaledWidth = imageWidth * scalingRatio;
 
     imageCanvas.style.width  = scaledWidth  + "px";
     imageCanvas.style.height = scaledHeight + "px";
+
+    /* Run the scaling twice by default, because often the first time wrong dimensions for the container are reported. */
+    if (runtwice) scaleCanvas(false);
 }
 
 function loadCurrentImage() {
