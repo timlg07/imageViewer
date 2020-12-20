@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron');
-
 const fullScreenFlag = "fullscreen";
 
 ipcRenderer.on('enter-full-screen', () => {

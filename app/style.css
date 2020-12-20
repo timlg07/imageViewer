@@ -2,11 +2,14 @@ body {
     background-color: #888;
 }
 
-#image {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    
+#image-container {    
     position: absolute;
     inset: 0;
+}
+
+#image-container canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

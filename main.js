@@ -18,8 +18,8 @@ function createWindow() {
         position: "center",
         width:  width  * .75,
         height: height * .75,
-        minWidth: 380,
-        minHeight: 210,
+        minWidth: 180,
+        minHeight: 100,
         resizable: true,
 
         webPreferences: {
@@ -46,6 +46,10 @@ function createWindow() {
 
     /* Create a local shortcut as intuitive alternative to F11 for exiting the fullscreen mode. */
     localShortcut.register(win, "Escape", () => win.setFullScreen(false));
+
+    /* Create local shortcuts to go back and forth between images. */
+    localShortcut.register(win, "Right", () => win.webContents.send("nextImage"));
+    localShortcut.register(win, "Left",  () => win.webContents.send("prevImage"));
 }
 
 app.whenReady().then(createWindow);

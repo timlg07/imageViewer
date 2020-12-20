@@ -7,7 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const theme = isWin ? Themebar.win : Themebar.mac;
 
     /* Create a new custom titlebar. */
-    new Titlebar({
+    window.customTitlebar = new Titlebar({
         menu: createMenu(),
         iconsTheme: theme,
         icon: "./../resources/imageViewer.png"
