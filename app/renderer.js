@@ -48,8 +48,6 @@ function scaleCanvas() {
     const imageWidth  = imageCanvas.width;
     const imageHeight = imageCanvas.height;
 
-    console.log(`available space: h=${availableHeight}, w=${availableWidth}`);
-
     let scalingRatio = availableWidth / imageWidth;
     let scaledHeight = imageHeight * scalingRatio;
 
