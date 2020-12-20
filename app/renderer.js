@@ -53,8 +53,8 @@ function scaleCanvas() {
 
     let scaledWidth = imageWidth * scalingRatio;
 
-    imageCanvas.style.width  = Math.floor(scaledWidth)  + "px";
-    imageCanvas.style.height = Math.floor(scaledHeight) + "px";
+    imageCanvas.style.width  = scaledWidth  + "px";
+    imageCanvas.style.height = scaledHeight + "px";
 }
 
 function loadCurrentImage() {
