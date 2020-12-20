@@ -15,11 +15,7 @@ module.exports = {
         menu.append(new remote.MenuItem({
             label: 'View',
             submenu: [
-                { role: 'togglefullscreen', label: 'Fullscreen (Exit with escape)' },
-                { type: 'separator' },
-                { role: 'resetZoom' },
-                { role: 'zoomIn' },
-                { role: 'zoomOut' },
+                { role: 'togglefullscreen', label: 'Fullscreen (Exit with escape)' }
             ]
         }));
 
