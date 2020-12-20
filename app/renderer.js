@@ -43,17 +43,14 @@ function scaleCanvas(runtwice = true) {
     const imageWidth  = imageCanvas.width;
     const imageHeight = imageCanvas.height;
 
-    console.log("available: h="+availableHeight+", w="+availableWidth);
+    // console.log(`available space: h=${availableHeight}, w=${availableWidth}`);
 
     let scalingRatio = availableWidth / imageWidth;
     let scaledHeight = imageHeight * scalingRatio;
 
-    // console.log("scaled per width: h=" + scaledHeight + ", w=" + (imageWidth * scalingRatio));
-
     if (scaledHeight > availableHeight) {
         scalingRatio = availableHeight / imageHeight;
         scaledHeight = imageHeight * scalingRatio;
-        // console.log("scaled per height: h=" + scaledHeight + ", w=" + (imageWidth * scalingRatio));
     }
 
     let scaledWidth = imageWidth * scalingRatio;
@@ -61,7 +58,18 @@ function scaleCanvas(runtwice = true) {
     imageCanvas.style.width  = scaledWidth  + "px";
     imageCanvas.style.height = scaledHeight + "px";
 
-    /* Run the scaling twice by default, because often the first time wrong dimensions for the container are reported. */
+    /* 
+     * Run the scaling twice by default, because often the first time 
+     * wrong dimensions for the container are reported. 
+     * 
+     * Example scenerio: The height is 618. The user changes only the width,
+     * leaving the height as is. At the first call always a wrong height of
+     * 601 is reported, which results in a too small image. At the second call
+     * always the correct height of 618 is returned and everything works as
+     * expected.
+     * 
+     * TODO: Find out why this is happening. 
+     */
     if (runtwice) scaleCanvas(false);
 }
 
