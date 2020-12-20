@@ -8,6 +8,15 @@ module.exports = {
         menu.append(new remote.MenuItem({
             label: 'File',
             submenu: [
+                { 
+                    label: 'Next Image',
+                    click: () => switchImage(currentImageIndex + 1),
+                },
+                { 
+                    label: 'Previous Image',
+                    click: () => switchImage(currentImageIndex - 1),
+                },
+                { type: 'separator' },
                 { role: isMac ? 'close' : 'quit' }
             ]
         }));
