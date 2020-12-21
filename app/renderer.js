@@ -1,12 +1,14 @@
 const { remote, ipcRenderer } = require("electron");
 const path = require("path");
 const loadImage = require("blueimp-load-image");
+const { assert } = require("console");
 
 const supportedExtensions = [
     "jpg", "jpeg", "png", "gif", "webp", "bmp", "svg"
 ];
 
-let imageContainer, imageCanvas, images, fileNames, baseTitle
+const imageCanvas = {source: null, scaled: null};
+let imageContainer, images, fileNames, baseTitle,
     currentImageIndex = 0;
 
 window.addEventListener('load', () => {
@@ -16,6 +18,7 @@ window.addEventListener('load', () => {
     fileNames = images.map(v => path.basename(v));
     images = images.map(slash).map(encodeChars);
     loadCurrentImage();
+    window.addEventListener("resize", scaleCanvas);
 });
 
 ipcRenderer.on("nextImage", () => switchImage(currentImageIndex + 1));
@@ -40,50 +43,38 @@ function scaleCanvas() {
     const containerRect = imageContainer.getBoundingClientRect();
     const availableWidth  = containerRect.width;
     const availableHeight = containerRect.height;
-    const imageWidth  = imageCanvas.width;
-    const imageHeight = imageCanvas.height;
+    const imageWidth  = imageCanvas.source.width;
+    const imageHeight = imageCanvas.source.height;
 
     let scalingRatio = availableWidth / imageWidth;
-    let scaledHeight = imageHeight * scalingRatio;
+    let scaledDimension = {
+        maxHeight: imageHeight * scalingRatio
+    };
 
-    if (scaledHeight > availableHeight) {
+    if (scaledDimension.maxHeight > availableHeight) {
         scalingRatio = availableHeight / imageHeight;
-        scaledHeight = imageHeight * scalingRatio;
+        scaledDimension = {
+            maxWidth: imageWidth * scalingRatio
+        };
     }
-
-    let scaledWidth = imageWidth * scalingRatio;
-
+/*
     imageCanvas.style.width  = scaledWidth  + "px";
     imageCanvas.style.height = scaledHeight + "px";
+*/
+    let scaledImage = loadImage.scale(imageCanvas.source, scaledDimension);
+    replaceDisplayedCanvas(scaledImage, true);
 }
 
 function loadCurrentImage() {
+    updateTitle("Loading.");
+    
     loadImage(images[currentImageIndex], {
         orientation: true,
-        canvas: true,
-        imageSmoothingQuality: 'high'
+        canvas: false
     }).then(data => {
-        if (imageCanvas) {
-            /* Remove the last image canvas from the DOM. */
-            imageContainer.removeChild(imageCanvas);
-        } else {
-            /* On the first load, register the scaler. */
-            window.addEventListener("resize", scaleCanvas);
-        }
-
-        imageCanvas = data.image;
-        
-        /* 
-         * It is important to scale the image before adding it to the DOM,
-         * because when adding it first, the container would be smaller due
-         * to the scrollbars added.
-         */
+        replaceDisplayedCanvas(data.image);
+        updateTitle(fileNames[currentImageIndex]);
         scaleCanvas();
-
-        imageContainer.appendChild(data.image);
-
-        const currentTitle = baseTitle + ": " + fileNames[currentImageIndex];
-        window.customTitlebar.updateTitle(currentTitle);
     });
 }
 
