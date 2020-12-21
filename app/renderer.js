@@ -37,12 +37,7 @@ function isImage(filePath) {
 }
 
 function scaleCanvas() {
-    /* This is needed either to recompute the layout or to avoid the canvas influencing its parents dimensions. */
-    imageCanvas.style.width  = 0;
-    imageCanvas.style.height = 0;
-
     const containerRect = imageContainer.getBoundingClientRect();
-
     const availableWidth  = containerRect.width;
     const availableHeight = containerRect.height;
     const imageWidth  = imageCanvas.width;

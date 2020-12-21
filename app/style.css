@@ -2,12 +2,13 @@ body {
     background-color: #888;
 }
 
-#image-container {    
+#image-container {
+    overflow: hidden;
     position: absolute;
     inset: 0;
 }
 
-#image-container canvas {
+#image-container * {
     position: absolute;
     top: 50%;
     left: 50%;
