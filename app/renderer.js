@@ -92,4 +92,35 @@ function switchImage(newIndex) {
         currentImageIndex = newIndex;
         loadCurrentImage();
     }
+/**
+ * Replaces the displayed canvas on the DOM with the new one
+ * and saves it in the global imageCanvas object.
+ * 
+ * @param {Node} newCanvas The new canvas that should be used.
+ * @param {boolean} isScaled Whether the provided canvas has 
+ *                           source resolution or was scaled.
+ */
+function replaceDisplayedCanvas(newCanvas, isScaled = false) {
+    // Remove the current canvas from being displayed in the container.
+    if (imageContainer.hasChildNodes()) {
+        imageContainer.removeChild(imageContainer.firstChild);
+    }
+
+    // There should now be no child nodes in the image container.
+    assert(imageContainer.hasChildNodes() == false);
+
+    /*
+     * Store the new canvas now, potentially overwriting previously scaled
+     * canvases. If a new source image is loaded, all stored images are
+     * overwritten.
+     */
+    if (isScaled) {
+        imageCanvas.scaled = newCanvas;
+    } else {
+        imageCanvas.scaled = null;
+        imageCanvas.source = newCanvas;
+    }
+
+    // Display the new image canvas.
+    imageContainer.appendChild(newCanvas);
 }
