@@ -62,8 +62,7 @@ function loadCurrentImage() {
 
     loadImage(images[currentImageIndex], {
         orientation: true,
-        canvas: true,
-        imageSmoothingQuality: 'high'
+        canvas: useCanvas
     }).then(data => {
         if (imageCanvas) {
             /* Remove the last image canvas from the DOM. */

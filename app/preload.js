@@ -1,6 +1,8 @@
 const { Titlebar, Themebar } = require('custom-electron-titlebar');
 const { createMenu } = require("./titlebar/menubar");
 
+window.useCanvas = false;
+
 window.addEventListener('DOMContentLoaded', () => {
     /* Decide the theme based on the current operating system. */
     const isWin = (process.platform === "win32");
