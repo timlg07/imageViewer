@@ -38,7 +38,8 @@ module.exports = {
                         item.checked = useCanvas;
                         loadCurrentImage();
                     }
-                }
+                },
+                { role: 'toggleDevTools' }
             ]
         }));
 
