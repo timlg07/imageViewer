@@ -73,6 +73,8 @@ function loadCurrentImage() {
 
         imageContainer.appendChild(data.image);
         updateTitle(fileNames[currentImageIndex]);
+    }).catch(r => {
+        updateTitle("Error loading the image.");
     });
 }
 
