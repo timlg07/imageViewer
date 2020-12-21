@@ -15,6 +15,7 @@ window.addEventListener('load', () => {
     images = remote.process.argv.filter(isImage);
     fileNames = images.map(v => path.basename(v));
     images = images.map(slash).map(encodeChars);
+    updateSwitchImageMenuItems();
     loadCurrentImage();
 });
 
@@ -79,10 +80,21 @@ function loadCurrentImage() {
 }
 
 function switchImage(newIndex) {
-    if (newIndex < images.length && newIndex >= 0) {
+    if (fileIndexInRange(newIndex)) {
         currentImageIndex = newIndex;
+        updateSwitchImageMenuItems();
         loadCurrentImage();
     }
+}
+
+function updateSwitchImageMenuItems() {
+    const items = remote.Menu.getApplicationMenu().items[0].submenu.items;
+    items[0].enabled = fileIndexInRange(currentImageIndex + 1);
+    items[1].enabled = fileIndexInRange(currentImageIndex - 1);
+}
+
+function fileIndexInRange(index) {
+    return (index >= 0) && (index < images.length);
 }
 
 function updateTitle(titleMessage) {
