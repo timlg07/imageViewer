@@ -11,12 +11,12 @@ module.exports = {
                 { 
                     label: 'Next Image',
                     click: () => switchImage(currentImageIndex + 1),
-                    accelerator: '>'
+                    accelerator: 'Right'
                 },
                 { 
                     label: 'Previous Image',
                     click: () => switchImage(currentImageIndex - 1),
-                    accelerator: '<'
+                    accelerator: 'Left'
                 },
                 { type: 'separator' },
                 { role: isMac ? 'close' : 'quit' }
@@ -30,14 +30,14 @@ module.exports = {
                 { type: 'separator' },
                 { 
                     type: 'checkbox', 
-                    label: 'Use Canvas for more detail.', 
+                    label: 'Use Canvas for more detail.',
+                    accelerator: 'D', 
                     checked: useCanvas, 
                     click: (item, win) => {
                         useCanvas = !useCanvas;
                         item.checked = useCanvas;
                         loadCurrentImage();
-                    },
-                    accelerator: 'CmdOrCtrl+Shift+D'
+                    }
                 }
             ]
         }));

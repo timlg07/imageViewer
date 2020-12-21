@@ -20,6 +20,10 @@ window.addEventListener('load', () => {
 
 ipcRenderer.on("nextImage", () => switchImage(currentImageIndex + 1));
 ipcRenderer.on("prevImage", () => switchImage(currentImageIndex - 1));
+ipcRenderer.on("toggleCanvas", () => {
+    useCanvas = !useCanvas;
+    loadCurrentImage();
+});
 
 
 function slash(str) {
