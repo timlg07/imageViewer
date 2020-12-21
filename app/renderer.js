@@ -6,7 +6,7 @@ const supportedExtensions = [
     "jpg", "jpeg", "png", "gif", "webp", "bmp", "svg"
 ];
 
-let imageContainer, imageCanvas, images, fileNames, baseTitle
+let imageContainer, imageCanvas, images, fileNames, baseTitle,
     currentImageIndex = 0;
 
 window.addEventListener('load', () => {
@@ -58,6 +58,8 @@ function scaleCanvas() {
 }
 
 function loadCurrentImage() {
+    updateTitle("Loading.");
+
     loadImage(images[currentImageIndex], {
         orientation: true,
         canvas: true,
@@ -81,9 +83,7 @@ function loadCurrentImage() {
         scaleCanvas();
 
         imageContainer.appendChild(data.image);
-
-        const currentTitle = baseTitle + ": " + fileNames[currentImageIndex];
-        window.customTitlebar.updateTitle(currentTitle);
+        updateTitle(fileNames[currentImageIndex]);
     });
 }
 
@@ -92,4 +92,10 @@ function switchImage(newIndex) {
         currentImageIndex = newIndex;
         loadCurrentImage();
     }
+}
+
+function updateTitle(titleMessage) {
+    const seperator = " ─ ";
+    const newTitle = baseTitle + seperator + titleMessage;
+    window.customTitlebar.updateTitle(newTitle);
 }
