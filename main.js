@@ -46,11 +46,6 @@ function createWindow() {
 
     /* Create a local shortcut as intuitive alternative to F11 for exiting the fullscreen mode. */
     localShortcut.register(win, "Escape", () => win.setFullScreen(false));
-
-    /* Create local shortcuts for the menu items. */
-    localShortcut.register(win, "Right", () => win.webContents.send("nextImage"));
-    localShortcut.register(win, "Left",  () => win.webContents.send("prevImage"));
-    localShortcut.register(win, "D",     () => win.webContents.send("toggleCanvas"));
 }
 
 app.whenReady().then(createWindow);

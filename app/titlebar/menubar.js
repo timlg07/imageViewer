@@ -26,14 +26,14 @@ module.exports = {
         menu.append(new remote.MenuItem({
             label: 'View',
             submenu: [
-                { role: 'togglefullscreen', label: 'Fullscreen (Exit with escape)' },
+                { role: 'togglefullscreen', label: 'Fullscreen (exit with esc, toggle with F)' },
                 { type: 'separator' },
                 { 
                     type: 'checkbox', 
-                    label: 'Use Canvas for more detail.',
+                    label: 'Use Canvas for more detail and sharpness.',
                     accelerator: 'D', 
                     checked: useCanvas, 
-                    click: (item, win) => {
+                    click: item => {
                         useCanvas = !useCanvas;
                         item.checked = useCanvas;
                         loadCurrentImage();
@@ -42,6 +42,7 @@ module.exports = {
             ]
         }));
 
+        remote.Menu.setApplicationMenu(menu);
         return menu;
     }
 }
