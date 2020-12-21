@@ -74,12 +74,6 @@ function loadCurrentImage() {
         }
 
         imageCanvas = data.image;
-        
-        /* 
-         * It is important to scale the image before adding it to the DOM,
-         * because when adding it first, the container would be smaller due
-         * to the scrollbars added.
-         */
         scaleCanvas();
 
         imageContainer.appendChild(data.image);
