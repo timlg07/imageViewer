@@ -44,8 +44,9 @@ function createWindow() {
         });
     });
 
-    /* Create a local shortcut as intuitive alternative to F11 for exiting the fullscreen mode. */
+    /* Create a local shortcuts as intuitive alternatives to F11 for toggling or exiting the fullscreen mode. */
     localShortcut.register(win, "Escape", () => win.setFullScreen(false));
+    localShortcut.register(win, "F", () => win.setFullScreen(!win.isFullScreen()));
 }
 
 app.whenReady().then(createWindow);
