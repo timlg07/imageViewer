@@ -60,14 +60,5 @@ module.exports = {
      */
     generateMenu(win) {
         return Menu.buildFromTemplate(this.generateTemplate(win));
-    },
-
-    /**
-     * Generates the template, builds a menu from it and applies it to the given window.
-     * 
-     * @param {BrowserWindow} win 
-     */
-    generateAndApply(win) {
-        win.setMenu(this.generateMenu(win));
     }
 }

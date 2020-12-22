@@ -31,8 +31,8 @@ function createWindow() {
         }
     });
 
-    //menu.generateAndApply(win);
-    Menu.setApplicationMenu(Menu.buildFromTemplate(menu.generateTemplate(win)));
+    // Set the application window, because this is used by the custom-titlebar.
+    Menu.setApplicationMenu(menu.generateMenu(win));
 
     win.loadFile(path.join(__dirname, "app", "index.html"));
 
