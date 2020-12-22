@@ -7,7 +7,7 @@ const supportedExtensions = [
 ];
 
 let imageContainer, imageCanvas, images, fileNames, baseTitle,
-    currentImageIndex = 0;
+    useCanvas = false, currentImageIndex = 0;
 
 window.addEventListener('load', () => {
     baseTitle = document.title;
@@ -17,6 +17,25 @@ window.addEventListener('load', () => {
     images = images.map(slash).map(encodeChars);
     updateSwitchImageMenuItems();
     loadCurrentImage();
+
+    const useCanvasCheckmark = remote.Menu.getApplicationMenu().items[1].submenu.items[2];
+    const channelListeners = {
+        'switchToNextImage' : () => switchImage(currentImageIndex + 1),
+        'switchToPrevImage' : () => switchImage(currentImageIndex - 1),
+        'toggleCanvasMode'  : (_, state) => {
+            /**
+             * Only god knows why this has to be done from the render process and produces 
+             * completely weird and variating results when done directly in the click listener
+             * of the menu item.
+             */
+            //useCanvasCheckmark.checked = state;
+            useCanvas = state;
+            loadCurrentImage();
+        }
+    };
+    Object.keys(channelListeners).forEach(key => {
+        ipcRenderer.on(key, channelListeners[key]);
+    });
 });
 
 function slash(str) {

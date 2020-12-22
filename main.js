@@ -1,6 +1,7 @@
-const { app, BrowserWindow, screen } = require("electron");
+const { app, BrowserWindow, screen, Menu } = require("electron");
 const localShortcut = require('electron-localshortcut');
 const path = require("path");
+const menu = require("./menu");
 
 function createWindow() {
     /* Events that will get forwarded to the render process, because they impact the apps appearance. */
@@ -29,6 +30,9 @@ function createWindow() {
             preload: path.join(__dirname, "app", "preload.js")
         }
     });
+
+    //menu.generateAndApply(win);
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menu.generateTemplate(win)));
 
     win.loadFile(path.join(__dirname, "app", "index.html"));
 
