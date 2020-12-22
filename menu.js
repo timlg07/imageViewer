@@ -43,38 +43,7 @@ module.exports = {
                         label: 'Use Canvas for more detail and sharpness.',
                         accelerator: 'D',
                         checked: false,
-                        click: (function(initialValue) {
-                            let trackerValue = initialValue;
-                            return (function(item) {
-                                const expected = trackerValue;
-                                const actual = item.checked;
-                                console.log(`expected:${expected}, actual:${actual}`);
-                                win.webContents.send(channels.canv, !expected);
-                                item.checked = expected;
-                                trackerValue = !trackerValue;
-                            });
-                        })(false)
-                        /*
-                        checked: false,
-                        click: (() => {
-                            let useCanvas = false;
-                            return item => {//problem: item.checked is inversed when using the accelerator. wtf.
-                                console.log(`initial: expected:${useCanvas}, actual:${!item.checked}`);
-                                useCanvas = !useCanvas;
-                                win.webContents.send(channels.canv, item.checked);
-                                item.checked = !item.checked;
-                                console.log(`inverted: expected:${useCanvas}, actual:${!item.checked}\n`);
-                            }
-                        })()*/
-
-                        /**
-                         * ok
-                         * clicking on the item does not toggle its checked property. still showing default value (false).
-                         * 
-                         * using the accelerator does toggle the checked property and inverses the checkmark.
-                         * 
-                         * help.
-                         */
+                        click: () => win.webContents.send(channels.canv)
                     },
                     { role: 'toggleDevTools' }
                 ]

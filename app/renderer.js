@@ -22,14 +22,23 @@ window.addEventListener('load', () => {
     const channelListeners = {
         'switchToNextImage' : () => switchImage(currentImageIndex + 1),
         'switchToPrevImage' : () => switchImage(currentImageIndex - 1),
-        'toggleCanvasMode'  : (_, state) => {
+        'toggleCanvasMode'  : () => {
+            useCanvas = !useCanvas;
             /**
-             * Only god knows why this has to be done from the render process and produces 
-             * completely weird and variating results when done directly in the click listener
-             * of the menu item.
+             * When the checkmark is toggeled from the click-function on the main process, 
+             * weird things happen: Sometimes the checkmarked is displayed correctly, 
+             * sometimes not, sometimes it only returns an wrong value.
+             * It also is not consistent and it makes a difference if you click on the
+             * menu item or use the accelerator, making it impossible to enforce a
+             * manually stored checked-property.
+             * This is the only working solution I found, where value and visual 
+             * representation are correct, no matter with which method you call the
+             * click-function.
+             * 
+             * TODO: Try to reproduce in a new, clean project. Maybe an issue with the 
+             * custom-titlebar?
              */
-            //useCanvasCheckmark.checked = state;
-            useCanvas = state;
+            useCanvasCheckmark.checked = useCanvas;
             loadCurrentImage();
         }
     };
