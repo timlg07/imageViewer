@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
     /* Create a new custom titlebar. */
     window.customTitlebar = new Titlebar({
         iconsTheme: theme,
-        icon: "./../resources/imageViewer.png"
+        icon: "./../resources/imageViewer.png",
+        shadow: true
     });
 });
