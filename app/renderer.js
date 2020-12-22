@@ -1,132 +1,101 @@
-const { remote, ipcRenderer } = require("electron");
-const path = require("path");
-const loadImage = require("blueimp-load-image");
+window.addEventListener('view-ready', event => {
+    const { util, view } = event.detail;
 
-const supportedExtensions = [
-    "jpg", "jpeg", "png", "gif", "webp", "bmp", "svg"
-];
+    function loadCurrentImage() {
+        util.updateTitle("Loading.");
+        util.loadImage(images[currentImageIndex], {
+            orientation: true,
+            canvas: useCanvas
+        }).then(data => {
+            view.displayedImage = data.image;
+            currentImageHeight = data.originalHeight;
+            currentImageWidth = data.originalWidth;
+            scaleCanvas();
+            util.updateTitle(fileNames[currentImageIndex]);
+        }).catch(r => {
+            view.displayedImage = null;
+            util.updateTitle("Error loading the image.");
+        });
+    }
 
-let imageContainer, imageCanvas, images, fileNames, baseTitle,
-    useCanvas = false, currentImageIndex = 0;
+    function scaleCanvas() {
+        const containerRect = view.imageContainerBoundingRect;
+        const availableWidth  = containerRect.width;
+        const availableHeight = containerRect.height;
+    
+        let scalingRatio = availableWidth / currentImageWidth;
+        let scaledHeight = currentImageHeight * scalingRatio;
+    
+        if (scaledHeight > availableHeight) {
+            scalingRatio = availableHeight / currentImageHeight;
+            scaledHeight = currentImageHeight * scalingRatio;
+        }
+    
+        let scaledWidth = currentImageWidth * scalingRatio;
+    
+        view.displayedImage.style.width  = scaledWidth  + "px";
+        view.displayedImage.style.height = scaledHeight + "px";
+    }
 
-window.addEventListener('load', () => {
-    baseTitle = document.title;
-    imageContainer = document.getElementById("image-container");
-    images = remote.process.argv.filter(isImage);
-    fileNames = images.map(v => path.basename(v));
-    images = images.map(slash).map(encodeChars);
-    updateSwitchImageMenuItems();
+    function scanFiles(files) {
+        const supportedFiles = files.filter(util.isImage);
+        const fileNames = supportedFiles.map(v => util.getFileName(v));
+        const fileURLs  = supportedFiles.map(util.handleSlashes).map(util.encodeChars);
+
+        return {
+            names: fileNames,
+            urls: fileURLs
+        };
+    }
+    
+    function switchImage(newIndex) {
+        if (fileIndexInRange(newIndex)) {
+            currentImageIndex = newIndex;
+            updateNextPrevMenuItems();
+            loadCurrentImage();
+        }
+    }
+
+    function updateNextPrevMenuItems() {
+        const prevInRange = fileIndexInRange(currentImageIndex - 1);
+        const nextInRange = fileIndexInRange(currentImageIndex + 1);
+        view.updateNextPrevMenuItems(prevInRange, nextInRange);
+    }
+    
+    function fileIndexInRange(index) {
+        return (index >= 0) && (index < images.length);
+    }
+
+
+    let images, fileNames,
+        useCanvas = false, 
+        currentImageIndex  = 0,
+        currentImageWidth  = 0,
+        currentImageHeight = 0;
+
+    const supportedFilesFromArguments = scanFiles(util.arguments);
+    images = supportedFilesFromArguments.urls;
+    fileNames = supportedFilesFromArguments.names;
+
+    updateNextPrevMenuItems();
     loadCurrentImage();
 
-    const useCanvasCheckmark = remote.Menu.getApplicationMenu().items[1].submenu.items[2];
+    window.addEventListener("resize", scaleCanvas);
+
     const channelListeners = {
         'switchToNextImage' : () => switchImage(currentImageIndex + 1),
         'switchToPrevImage' : () => switchImage(currentImageIndex - 1),
         'toggleCanvasMode'  : () => {
             useCanvas = !useCanvas;
-            /**
-             * When the checkmark is toggeled from the click-function on the main process, 
-             * weird things happen: Sometimes the checkmarked is displayed correctly, 
-             * sometimes not, sometimes it only returns an wrong value.
-             * It also is not consistent and it makes a difference if you click on the
-             * menu item or use the accelerator, making it impossible to enforce a
-             * manually stored checked-property.
-             * This is the only working solution I found, where value and visual 
-             * representation are correct, no matter with which method you call the
-             * click-function.
-             * 
-             * TODO: Try to reproduce in a new, clean project. Maybe an issue with the 
-             * custom-titlebar?
-             */
-            useCanvasCheckmark.checked = useCanvas;
+
+            // Manually toggle the visual checkmark in the menu:
+            view.useCanvas = useCanvas;
+
             loadCurrentImage();
         }
     };
+
     Object.keys(channelListeners).forEach(key => {
-        ipcRenderer.on(key, channelListeners[key]);
+        util.ipcRenderer.on(key, channelListeners[key]);
     });
 });
-
-function slash(str) {
-    return str.replace(/\\/g, "/");
-}
-
-function encodeChars(str) {
-    return str.replace(/['()# ]/g, c => ('%' + c.charCodeAt(0).toString(16)));
-}
-
-function isImage(filePath) {
-    /* Get the extension of the file, remove the leading dot and force only lowercase characters. */
-    const ext = path.extname(filePath).slice(1).toLowerCase();
-    return ext && supportedExtensions.indexOf(ext) >= 0;
-}
-
-function scaleCanvas() {
-    const containerRect = imageContainer.getBoundingClientRect();
-    const availableWidth  = containerRect.width;
-    const availableHeight = containerRect.height;
-    const imageWidth  = imageCanvas.width;
-    const imageHeight = imageCanvas.height;
-
-    let scalingRatio = availableWidth / imageWidth;
-    let scaledHeight = imageHeight * scalingRatio;
-
-    if (scaledHeight > availableHeight) {
-        scalingRatio = availableHeight / imageHeight;
-        scaledHeight = imageHeight * scalingRatio;
-    }
-
-    let scaledWidth = imageWidth * scalingRatio;
-
-    imageCanvas.style.width  = scaledWidth  + "px";
-    imageCanvas.style.height = scaledHeight + "px";
-}
-
-function loadCurrentImage() {
-    updateTitle("Loading.");
-
-    loadImage(images[currentImageIndex], {
-        orientation: true,
-        canvas: useCanvas
-    }).then(data => {
-        if (imageCanvas) {
-            /* Remove the last image canvas from the DOM. */
-            imageContainer.removeChild(imageCanvas);
-        } else {
-            /* On the first load, register the scaler. */
-            window.addEventListener("resize", scaleCanvas);
-        }
-
-        imageCanvas = data.image;
-        scaleCanvas();
-
-        imageContainer.appendChild(data.image);
-        updateTitle(fileNames[currentImageIndex]);
-    }).catch(r => {
-        updateTitle("Error loading the image.");
-    });
-}
-
-function switchImage(newIndex) {
-    if (fileIndexInRange(newIndex)) {
-        currentImageIndex = newIndex;
-        updateSwitchImageMenuItems();
-        loadCurrentImage();
-    }
-}
-
-function updateSwitchImageMenuItems() {
-    const items = remote.Menu.getApplicationMenu().items[0].submenu.items;
-    items[0].enabled = fileIndexInRange(currentImageIndex + 1);
-    items[1].enabled = fileIndexInRange(currentImageIndex - 1);
-}
-
-function fileIndexInRange(index) {
-    return (index >= 0) && (index < images.length);
-}
-
-function updateTitle(titleMessage) {
-    const seperator = " ─ ";
-    const newTitle = baseTitle + seperator + titleMessage;
-    window.customTitlebar.updateTitle(newTitle);
-}

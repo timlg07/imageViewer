@@ -13,7 +13,7 @@ function createWindow() {
     /* Create the main browser-window. */
     let win = new BrowserWindow({
         title: "imageViewer",
-        icon: path.join(__dirname, "resources", "imageViewer.png"),
+        icon: path.join(app.getAppPath(), "resources", "imageViewer.png"),
         frame: false,
 
         position: "center",
@@ -24,17 +24,17 @@ function createWindow() {
         resizable: true,
 
         webPreferences: {
-            nodeIntegration: true,
+            nodeIntegration: false,
             contextIsolation: false,
             enableRemoteModule: true,
-            preload: path.join(__dirname, "app", "preload.js")
+            preload: path.join(app.getAppPath(), "app", "preload.js")
         }
     });
 
     // Set the application menu, because this is used by the custom-titlebar.
     Menu.setApplicationMenu(menu.generateMenu(win));
 
-    win.loadFile(path.join(__dirname, "app", "index.html"));
+    win.loadFile(path.join(app.getAppPath(), "app", "index.html"));
 
     win.on('closed', () => {
         /* Dereference the main window object when terminated. */

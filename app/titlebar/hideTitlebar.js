@@ -1,9 +1,12 @@
-const fullScreenFlag = "fullscreen";
+window.addEventListener('util-ready', evt => {
+    const fullScreenFlag = "fullscreen";
+    const util = evt.detail.util;
 
-ipcRenderer.on('enter-full-screen', () => {
-    document.body.classList.add(fullScreenFlag);
-});
+    util.ipcRenderer.on('enter-full-screen', () => {
+        document.body.classList.add(fullScreenFlag);
+    });
 
-ipcRenderer.on('leave-full-screen', () => {
-    document.body.classList.remove(fullScreenFlag);
+    util.ipcRenderer.on('leave-full-screen', () => {
+        document.body.classList.remove(fullScreenFlag);
+    });
 });

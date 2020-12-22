@@ -1,4 +1,4 @@
-const { BrowserWindow, global, Menu } = require('electron');
+const { BrowserWindow, Menu } = require('electron');
 
 const isMac = (process.platform === "darwin");
 const channels = {
@@ -30,7 +30,7 @@ module.exports = {
                         accelerator: 'Left'
                     },
                     { type: 'separator' },
-                    { role: isMac ? 'close' : 'quit' }
+                    { role: (isMac ? 'close' : 'quit') }
                 ]
             },
             {
