@@ -1,6 +1,6 @@
-window.addEventListener('util-ready', evt => {
+window.addEventListener('util-ready', event => {
     const fullScreenFlag = "fullscreen";
-    const util = evt.detail.util;
+    const util = event.detail.util;
 
     util.ipcRenderer.on('enter-full-screen', () => {
         document.body.classList.add(fullScreenFlag);

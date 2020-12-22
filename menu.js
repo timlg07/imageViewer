@@ -1,6 +1,6 @@
 const { BrowserWindow, Menu } = require('electron');
 
-const isMac = (process.platform === "darwin");
+const isMac = (process.platform === 'darwin');
 const channels = {
     next: 'switchToNextImage',
     prev: 'switchToPrevImage',
@@ -17,35 +17,35 @@ module.exports = {
     generateTemplate(win) {
         const template = [
             {
-                label: 'File',
+                label: "File",
                 submenu: [
                     { 
-                        label: 'Next Image',
+                        label: "Next Image",
                         click: () => win.webContents.send(channels.next),
                         accelerator: 'Right'
                     },
                     { 
-                        label: 'Previous Image',
+                        label: "Previous Image",
                         click: () => win.webContents.send(channels.prev),
                         accelerator: 'Left'
                     },
-                    { type: 'separator' },
-                    { role: (isMac ? 'close' : 'quit') }
+                    { type: "separator" },
+                    { role: (isMac ? "close" : "quit") }
                 ]
             },
             {
-                label: 'View',
+                label: "View",
                 submenu: [
-                    { role: 'togglefullscreen', label: 'Fullscreen (exit with esc, toggle with F)' },
-                    { type: 'separator' },
+                    { role: "togglefullscreen", label: "Fullscreen (exit with esc, toggle with F)" },
+                    { type: "separator" },
                     { 
-                        type: 'checkbox', 
-                        label: 'Use Canvas for more detail and sharpness.',
+                        type: "checkbox", 
+                        label: "Use Canvas for more detail and sharpness.",
                         accelerator: 'D',
                         checked: false,
                         click: () => win.webContents.send(channels.canv)
                     },
-                    { role: 'toggleDevTools' }
+                    { role: "toggleDevTools" }
                 ]
             }
         ];

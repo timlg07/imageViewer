@@ -1,7 +1,7 @@
-const { app, BrowserWindow, screen, Menu } = require("electron");
+const { app, BrowserWindow, screen, Menu } = require('electron');
 const localShortcut = require('electron-localshortcut');
-const path = require("path");
-const menu = require("./menu");
+const path = require('path');
+const menu = require('./menu');
 
 function createWindow() {
     /* Events that will get forwarded to the render process, because they impact the apps appearance. */
@@ -10,10 +10,16 @@ function createWindow() {
     /* Get the screens dimensions to define the apps size relatively to the available space. */
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
+    const files = {
+        icon:    path.join(app.getAppPath(), "resources", "imageViewer.png"),
+        preload: path.join(app.getAppPath(), "app", "preload.js"),
+        index:   path.join(app.getAppPath(), "app", "index.html")
+    }
+
     /* Create the main browser-window. */
     let win = new BrowserWindow({
         title: "imageViewer",
-        icon: path.join(app.getAppPath(), "resources", "imageViewer.png"),
+        icon: files.icon,
         frame: false,
 
         position: "center",
@@ -27,14 +33,14 @@ function createWindow() {
             nodeIntegration: false,
             contextIsolation: false,
             enableRemoteModule: true,
-            preload: path.join(app.getAppPath(), "app", "preload.js")
+            preload: files.preload
         }
     });
 
     // Set the application menu, because this is used by the custom-titlebar.
     Menu.setApplicationMenu(menu.generateMenu(win));
 
-    win.loadFile(path.join(app.getAppPath(), "app", "index.html"));
+    win.loadFile(files.index);
 
     win.on('closed', () => {
         /* Dereference the main window object when terminated. */
@@ -48,7 +54,7 @@ function createWindow() {
         });
     });
 
-    /* Create a local shortcuts as intuitive alternatives to F11 for toggling or exiting the fullscreen mode. */
+    /* Create local shortcuts as intuitive alternatives to F11 for toggling or exiting the fullscreen mode. */
     localShortcut.register(win, "Escape", () => win.setFullScreen(false));
     localShortcut.register(win, "F", () => win.setFullScreen(!win.isFullScreen()));
 }

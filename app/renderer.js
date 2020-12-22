@@ -19,6 +19,9 @@ window.addEventListener('view-ready', event => {
     }
 
     function scaleCanvas() {
+        /* No calculation if no image is displayed currently. */
+        if (view.displayedImage == null) return;
+
         const containerRect = view.imageContainerBoundingRect;
         const availableWidth  = containerRect.width;
         const availableHeight = containerRect.height;
@@ -80,7 +83,7 @@ window.addEventListener('view-ready', event => {
     updateNextPrevMenuItems();
     loadCurrentImage();
 
-    window.addEventListener("resize", scaleCanvas);
+    window.addEventListener('resize', scaleCanvas);
 
     const channelListeners = {
         'switchToNextImage' : () => switchImage(currentImageIndex + 1),

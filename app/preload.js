@@ -1,11 +1,11 @@
 const { Titlebar, Themebar } = require('custom-electron-titlebar');
 const { remote, ipcRenderer } = require('electron');
-const path = require("path");
-const loadImage = require("blueimp-load-image");
+const path = require('path');
+const loadImage = require('blueimp-load-image');
 
 window.addEventListener('DOMContentLoaded', () => {
     /* Decide the theme based on the current operating system. */
-    const isWin = (process.platform === "win32");
+    const isWin = (process.platform === 'win32');
     const theme = isWin ? Themebar.win : Themebar.mac;
 
     /* Create a new custom titlebar. */
@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
         },
         
         encodeChars(str) {
-            return str.replace(/['()# ]/g, c => ('%' + c.charCodeAt(0).toString(16)));
+            return str.replace(/['()# ]/g, c => ("%" + c.charCodeAt(0).toString(16)));
         },
         
         isImage(filepath) {

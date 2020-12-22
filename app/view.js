@@ -1,8 +1,8 @@
-window.addEventListener('util-ready', evt => {
-    const util = evt.detail.util;
+window.addEventListener('util-ready', event => {
+    const util = event.detail.util;
 
     const view = (function() {
-        const imgContainer = document.getElementById("image-container");
+        const imgContainer = document.getElementById('image-container');
         const canvCheckmark = util.applicationMenu.items[1].submenu.items[2];
         const npImgMenuItems = util.applicationMenu.items[0].submenu.items;
 
@@ -21,8 +21,8 @@ window.addEventListener('util-ready', evt => {
                     imgContainer.removeChild(imgContainer.lastChild);
                 }
 
-                /* Add the new image to the DOM. */
-                if (newImageElement && newImageElement instanceof Node) {
+                /* Add the new image to the DOM if possible. */
+                if (newImageElement instanceof Node) {
                     imgContainer.appendChild(newImageElement);
                 }
             },
