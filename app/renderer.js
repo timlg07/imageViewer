@@ -19,9 +19,17 @@ window.addEventListener('view-ready', event => {
     }
 
     function scaleCanvas() {
-        /* No calculation if no image is displayed currently. */
-        if (view.displayedImage == null) return;
+        /* No calculation if no image is displayed currently */
+        if (view.displayedImage == null) {
+            return;
+        } else if (autoFitSize) {
+            scaleCanvasToContain();
+        } else {
+            scaleCanvasToOriginal();
+        }
+    }
 
+    function scaleCanvasToContain() {
         const containerRect = view.imageContainerBoundingRect;
         const availableWidth  = containerRect.width;
         const availableHeight = containerRect.height;
@@ -38,6 +46,13 @@ window.addEventListener('view-ready', event => {
     
         view.displayedImage.style.width  = scaledWidth  + "px";
         view.displayedImage.style.height = scaledHeight + "px";
+        view.hideImageScrollbars();
+    }
+
+    function scaleCanvasToOriginal() {
+        view.displayedImage.style.width  = currentImageWidth  + "px";
+        view.displayedImage.style.height = currentImageHeight + "px";
+        view.showImageScrollbars();
     }
 
     function scanFiles(files) {
@@ -72,6 +87,7 @@ window.addEventListener('view-ready', event => {
 
     let images, fileNames,
         useCanvas = false, 
+        autoFitSize = true,
         currentImageIndex  = 0,
         currentImageWidth  = 0,
         currentImageHeight = 0;
@@ -86,15 +102,31 @@ window.addEventListener('view-ready', event => {
     window.addEventListener('resize', scaleCanvas);
 
     const channelListeners = {
-        'switchToNextImage' : () => switchImage(currentImageIndex + 1),
-        'switchToPrevImage' : () => switchImage(currentImageIndex - 1),
-        'toggleCanvasMode'  : () => {
+        switchToNextImage() {
+            switchImage(currentImageIndex + 1);
+        },
+
+        switchToPrevImage() {
+            switchImage(currentImageIndex - 1);
+        },
+        
+        toggleCanvasMode() {
             useCanvas = !useCanvas;
 
             // Manually toggle the visual checkmark in the menu:
             view.useCanvas = useCanvas;
 
             loadCurrentImage();
+        },
+
+        setSizeToSource() {
+            autoFitSize = false;
+            scaleCanvas();
+        },
+
+        setSizeToFitWin() {
+            autoFitSize = true;
+            scaleCanvas();
         }
     };
 

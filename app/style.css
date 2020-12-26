@@ -8,6 +8,10 @@ body {
     inset: 0;
 }
 
+#image-container.scroll {
+    overflow: scroll;
+}
+
 #image-container * {
     position: absolute;
     top: 50%;

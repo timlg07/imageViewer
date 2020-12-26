@@ -31,6 +31,14 @@ window.addEventListener('util-ready', event => {
                 return imgContainer.firstChild;
             },
 
+            showImageScrollbars() {
+                imgContainer.classList.add("scroll");
+            },
+
+            hideImageScrollbars() {
+                imgContainer.classList.remove("scroll");
+            },
+
             updateNextPrevMenuItems(prev, next) {
                 npImgMenuItems[0].enabled = next;
                 npImgMenuItems[1].enabled = prev;

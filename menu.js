@@ -4,7 +4,11 @@ const isMac = (process.platform === 'darwin');
 const channels = {
     next: 'switchToNextImage',
     prev: 'switchToPrevImage',
-    canv: 'toggleCanvasMode'
+    canv: 'toggleCanvasMode',
+    size: {
+        src: 'setSizeToSource',
+        fit: 'setSizeToFitWin'
+    }
 }
 
 module.exports = {
@@ -45,6 +49,20 @@ module.exports = {
                         checked: false,
                         click: () => win.webContents.send(channels.canv)
                     },
+                    {
+                        label: "Display size",
+                        submenu: [
+                            {
+                                label: "Fit in window",
+                                click: () => win.webContents.send(channels.size.fit)
+                            },
+                            {
+                                label: "Original size",
+                                click: () => win.webContents.send(channels.size.src)
+                            }
+                        ]
+                    },
+                    { type: "separator" },
                     { role: "toggleDevTools" }
                 ]
             }
