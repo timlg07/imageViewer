@@ -23,8 +23,10 @@ window.addEventListener('view-ready', event => {
         if (view.displayedImage == null) {
             return;
         } else if (autoFitSize) {
+            view.hideImageScrollbars();
             scaleCanvasToContain();
         } else {
+            view.showImageScrollbars();
             scaleCanvasToOriginal();
         }
     }
@@ -46,13 +48,11 @@ window.addEventListener('view-ready', event => {
     
         view.displayedImage.style.width  = scaledWidth  + "px";
         view.displayedImage.style.height = scaledHeight + "px";
-        view.hideImageScrollbars();
     }
 
     function scaleCanvasToOriginal() {
         view.displayedImage.style.width  = currentImageWidth  + "px";
         view.displayedImage.style.height = currentImageHeight + "px";
-        view.showImageScrollbars();
     }
 
     function scanFiles(files) {
