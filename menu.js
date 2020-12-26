@@ -7,7 +7,9 @@ const channels = {
     canv: 'toggleCanvasMode',
     size: {
         src: 'setSizeToSource',
-        fit: 'setSizeToFitWin'
+        fit: 'setSizeToFitWin',
+        zoomIn: 'zoomIn',
+        zoomOut: 'zoomOut'
     }
 }
 
@@ -59,6 +61,16 @@ module.exports = {
                             {
                                 label: "Original size",
                                 click: () => win.webContents.send(channels.size.src)
+                            },
+                            {
+                                label: "Zoom in",
+                                click: () => win.webContents.send(channels.size.zoomIn),
+                                accelerator: "Plus"
+                            },
+                            {
+                                label: "Zoom out",
+                                click: () => win.webContents.send(channels.size.zoomOut),
+                                accelerator: "Minus"
                             }
                         ]
                     },

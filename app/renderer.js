@@ -1,9 +1,9 @@
 window.addEventListener('view-ready', event => {
     const { util, view } = event.detail;
 
-    function loadCurrentImage() {
+    function loadImage(imgPath, imgName) {
         util.updateTitle("Loading.");
-        util.loadImage(images[currentImageIndex], {
+        util.loadImage(imgPath, {
             orientation: true,
             canvas: useCanvas
         }).then(data => {
@@ -11,24 +11,35 @@ window.addEventListener('view-ready', event => {
             currentImageHeight = data.originalHeight;
             currentImageWidth = data.originalWidth;
             scaleCanvas();
-            util.updateTitle(fileNames[currentImageIndex]);
+            util.updateTitle(imgName);
         }).catch(r => {
             view.displayedImage = null;
             util.updateTitle("Error loading the image.");
         });
     }
 
+    function loadCurrentImage() {
+        if (currentImageIndex >= images.length) {
+            util.updateTitle("Nothing to view.");
+        } else {
+            loadImage(
+                images[currentImageIndex], 
+                fileNames[currentImageIndex]
+            );
+        }
+    }
+
     function scaleCanvas() {
-        /* No calculation if no image is displayed currently */
         if (view.displayedImage == null) {
-            return;
+            return; // No calculation if no image is displayed currently
         } else if (autoFitSize) {
             view.hideImageScrollbars();
             scaleCanvasToContain();
         } else {
             view.showImageScrollbars();
-            scaleCanvasToOriginal();
         }
+
+        applyCanvasScaling();
     }
 
     function scaleCanvasToContain() {
@@ -41,18 +52,14 @@ window.addEventListener('view-ready', event => {
     
         if (scaledHeight > availableHeight) {
             scalingRatio = availableHeight / currentImageHeight;
-            scaledHeight = currentImageHeight * scalingRatio;
         }
-    
-        let scaledWidth = currentImageWidth * scalingRatio;
-    
-        view.displayedImage.style.width  = scaledWidth  + "px";
-        view.displayedImage.style.height = scaledHeight + "px";
+
+        currentCanvasScale = scalingRatio;
     }
 
-    function scaleCanvasToOriginal() {
-        view.displayedImage.style.width  = currentImageWidth  + "px";
-        view.displayedImage.style.height = currentImageHeight + "px";
+    function applyCanvasScaling() {
+        view.displayedImage.style.width  = (currentImageWidth  * currentCanvasScale) + "px";
+        view.displayedImage.style.height = (currentImageHeight * currentCanvasScale) + "px";
     }
 
     function scanFiles(files) {
@@ -88,13 +95,16 @@ window.addEventListener('view-ready', event => {
     let images, fileNames,
         useCanvas = false, 
         autoFitSize = true,
+        currentCanvasScale = 1,
         currentImageIndex  = 0,
         currentImageWidth  = 0,
         currentImageHeight = 0;
 
-    const supportedFilesFromArguments = scanFiles(util.arguments);
-    images = supportedFilesFromArguments.urls;
-    fileNames = supportedFilesFromArguments.names;
+    (function parseArguments() {
+        const supportedFilesFromArguments = scanFiles(util.arguments);
+        images = supportedFilesFromArguments.urls;
+        fileNames = supportedFilesFromArguments.names;
+    })();
 
     updateNextPrevMenuItems();
     loadCurrentImage();
@@ -121,11 +131,24 @@ window.addEventListener('view-ready', event => {
 
         setSizeToSource() {
             autoFitSize = false;
+            currentCanvasScale = 1;
             scaleCanvas();
         },
 
         setSizeToFitWin() {
             autoFitSize = true;
+            scaleCanvas();
+        },
+
+        zoomIn() {
+            autoFitSize = false;
+            currentCanvasScale += .02;
+            scaleCanvas();
+        },
+        
+        zoomOut() {
+            autoFitSize = false;
+            currentCanvasScale -= .02;
             scaleCanvas();
         }
     };
