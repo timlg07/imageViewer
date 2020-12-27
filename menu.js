@@ -43,20 +43,13 @@ module.exports = {
                 label: "View",
                 submenu: [
                     { role: "togglefullscreen", label: "Fullscreen (exit with esc, toggle with F)" },
-                    { type: "separator" },
-                    { 
-                        type: "checkbox", 
-                        label: "Use Canvas for more detail and sharpness.",
-                        accelerator: 'D',
-                        checked: false,
-                        click: () => win.webContents.send(channels.canv)
-                    },
                     {
-                        label: "Display size",
+                        label: "Zoom",
                         submenu: [
                             {
                                 label: "Fit in window",
-                                click: () => win.webContents.send(channels.size.fit)
+                                click: () => win.webContents.send(channels.size.fit),
+                                accelerator: "0"
                             },
                             {
                                 label: "Original size",
@@ -65,7 +58,7 @@ module.exports = {
                             {
                                 label: "Zoom in",
                                 click: () => win.webContents.send(channels.size.zoomIn),
-                                accelerator: "\+"
+                                accelerator: "+"
                             },
                             {
                                 label: "Zoom out",
@@ -73,6 +66,14 @@ module.exports = {
                                 accelerator: "-"
                             }
                         ]
+                    },
+                    { type: "separator" },
+                    { 
+                        type: "checkbox", 
+                        label: "Use Canvas for more detail and sharpness.",
+                        accelerator: 'D',
+                        checked: false,
+                        click: () => win.webContents.send(channels.canv)
                     },
                     { type: "separator" },
                     { role: "toggleDevTools" }

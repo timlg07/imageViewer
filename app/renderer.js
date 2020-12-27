@@ -62,6 +62,42 @@ window.addEventListener('view-ready', event => {
         view.displayedImage.style.height = (currentImageHeight * currentCanvasScale) + "px";
     }
 
+    function zoomCanvas(event) {
+        const scrollAmount = event.deltaY / 100;
+        const inverse = -1;
+        applyZoom(inverse * scrollAmount * zoomDelta);
+    }
+
+    function applyZoom(amount) {
+        autoFitSize = false;
+        currentCanvasScale += amount;
+
+        if (currentCanvasScale < 0) {
+            currentCanvasScale = 0
+        }
+
+        scaleCanvas();
+    }
+
+    function mouseWheel(event) {
+        if (ctrlKeyDown) {
+            zoomCanvas(event);
+            event.preventDefault();
+        }
+    }
+
+    function keyDown(event) {
+        if (event.keyCode === 17) {
+            ctrlKeyDown = true;
+        }
+    }
+    
+    function keyUp(event) {
+        if (event.keyCode === 17) {
+            ctrlKeyDown = false;
+        }
+    }
+
     function scanFiles(files) {
         const supportedFiles = files.filter(util.isImage);
         const fileNames = supportedFiles.map(v => util.getFileName(v));
@@ -94,6 +130,7 @@ window.addEventListener('view-ready', event => {
 
     let images, fileNames,
         useCanvas = false, 
+        ctrlKeyDown = false,
         autoFitSize = true,
         zoomDelta = .008,
         currentCanvasScale = 1,
@@ -111,6 +148,9 @@ window.addEventListener('view-ready', event => {
     loadCurrentImage();
 
     window.addEventListener('resize', scaleCanvas);
+    window.addEventListener('keydown', keyDown);
+    window.addEventListener('keyup', keyUp);
+    view.addWheelHandler(mouseWheel);
 
     const channelListeners = {
         switchToNextImage() {
@@ -142,20 +182,11 @@ window.addEventListener('view-ready', event => {
         },
 
         zoomIn() {
-            autoFitSize = false;
-            currentCanvasScale += zoomDelta;
-            scaleCanvas();
+            applyZoom(zoomDelta);
         },
         
         zoomOut() {
-            autoFitSize = false;
-            currentCanvasScale -= zoomDelta;
-
-            if (currentCanvasScale < 0) {
-                currentCanvasScale = 0
-            }
-
-            scaleCanvas();
+            applyZoom(-zoomDelta);
         }
     };
 

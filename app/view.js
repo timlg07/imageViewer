@@ -3,7 +3,7 @@ window.addEventListener('util-ready', event => {
 
     const view = (function() {
         const imgContainer = document.getElementById('image-container');
-        const canvCheckmark = util.applicationMenu.items[1].submenu.items[2];
+        const canvCheckmark = util.applicationMenu.items[1].submenu.items[3];
         const npImgMenuItems = util.applicationMenu.items[0].submenu.items;
 
         return /* public interface. */ {
@@ -37,6 +37,10 @@ window.addEventListener('util-ready', event => {
 
             hideImageScrollbars() {
                 imgContainer.classList.remove("scroll");
+            },
+
+            addWheelHandler(fn) {
+                imgContainer.addEventListener('wheel', fn);
             },
 
             updateNextPrevMenuItems(prev, next) {
