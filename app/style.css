@@ -10,7 +10,7 @@ body {
 }
 
 #image-container.scroll {
-    overflow: scroll;
+    overflow: auto;
 }
 
 #image-container * {
