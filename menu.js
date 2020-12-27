@@ -65,12 +65,12 @@ module.exports = {
                             {
                                 label: "Zoom in",
                                 click: () => win.webContents.send(channels.size.zoomIn),
-                                accelerator: "Plus"
+                                accelerator: "\+"
                             },
                             {
                                 label: "Zoom out",
                                 click: () => win.webContents.send(channels.size.zoomOut),
-                                accelerator: "Minus"
+                                accelerator: "-"
                             }
                         ]
                     },

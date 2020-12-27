@@ -95,6 +95,7 @@ window.addEventListener('view-ready', event => {
     let images, fileNames,
         useCanvas = false, 
         autoFitSize = true,
+        zoomDelta = .008,
         currentCanvasScale = 1,
         currentImageIndex  = 0,
         currentImageWidth  = 0,
@@ -142,13 +143,18 @@ window.addEventListener('view-ready', event => {
 
         zoomIn() {
             autoFitSize = false;
-            currentCanvasScale += .02;
+            currentCanvasScale += zoomDelta;
             scaleCanvas();
         },
         
         zoomOut() {
             autoFitSize = false;
-            currentCanvasScale -= .02;
+            currentCanvasScale -= zoomDelta;
+
+            if (currentCanvasScale < 0) {
+                currentCanvasScale = 0
+            }
+
             scaleCanvas();
         }
     };
