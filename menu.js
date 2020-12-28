@@ -47,13 +47,18 @@ module.exports = {
                         label: "Zoom",
                         submenu: [
                             {
+                                type: "checkbox",
                                 label: "Fit in window",
-                                click: () => win.webContents.send(channels.size.fit),
+                                click: o => {
+                                    o.checked = false; // Setting checked to false sets the checkbox to true, idk why
+                                    win.webContents.send(channels.size.fit);
+                                },
                                 accelerator: "0"
                             },
                             {
                                 label: "Original size",
-                                click: () => win.webContents.send(channels.size.src)
+                                click: () => win.webContents.send(channels.size.src),
+                                accelerator: "O"
                             },
                             {
                                 label: "Zoom in",

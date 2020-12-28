@@ -5,6 +5,7 @@ window.addEventListener('util-ready', event => {
         const imgContainer = document.getElementById('image-container');
         const canvCheckmark = util.applicationMenu.items[1].submenu.items[3];
         const npImgMenuItems = util.applicationMenu.items[0].submenu.items;
+        const fitSizeMenuItem = util.applicationMenu.items[1].submenu.items[1].submenu.items[0];
 
         return /* public interface. */ {
             get imageContainerBoundingRect() {
@@ -31,12 +32,15 @@ window.addEventListener('util-ready', event => {
                 return imgContainer.firstChild;
             },
 
-            showImageScrollbars() {
-                imgContainer.classList.add("scroll");
-            },
+            set autoFitSize(enabled) {
+                const classname = "scroll";
+                if (enabled) {
+                    imgContainer.classList.remove(classname);
+                } else {
+                    imgContainer.classList.add(classname);
+                }
 
-            hideImageScrollbars() {
-                imgContainer.classList.remove("scroll");
+                fitSizeMenuItem.checked = enabled;
             },
 
             addWheelHandler(fn) {

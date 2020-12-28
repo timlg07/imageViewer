@@ -33,12 +33,10 @@ window.addEventListener('view-ready', event => {
         if (view.displayedImage == null) {
             return; // No calculation if no image is displayed currently
         } else if (autoFitSize) {
-            view.hideImageScrollbars();
             scaleCanvasToContain();
-        } else {
-            view.showImageScrollbars();
         }
 
+        view.autoFitSize = autoFitSize;
         applyCanvasScaling();
     }
 
@@ -63,7 +61,7 @@ window.addEventListener('view-ready', event => {
     }
 
     function zoomCanvas(event) {
-        const scrollAmount = event.deltaY / 100;
+        const scrollAmount = event.deltaY / 90;
         const inverse = -1;
         applyZoom(inverse * scrollAmount * zoomDelta);
     }
@@ -132,7 +130,7 @@ window.addEventListener('view-ready', event => {
         useCanvas = false, 
         ctrlKeyDown = false,
         autoFitSize = true,
-        zoomDelta = .008,
+        zoomDelta = .01,
         currentCanvasScale = 1,
         currentImageIndex  = 0,
         currentImageWidth  = 0,
