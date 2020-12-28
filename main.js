@@ -3,6 +3,8 @@ const localShortcut = require('electron-localshortcut');
 const path = require('path');
 const menu = require('./menu');
 
+let win;
+
 function createWindow() {
     /* Events that will get forwarded to the render process, because they impact the apps appearance. */
     const renderForwardEvents = ['enter-full-screen', 'leave-full-screen'];
@@ -17,7 +19,7 @@ function createWindow() {
     }
 
     /* Create the main browser-window. */
-    let win = new BrowserWindow({
+    win = new BrowserWindow({
         title: "imageViewer",
         icon: files.icon,
         frame: false,
@@ -68,7 +70,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
+    if (win == null) {
         createWindow();
     }
 });
