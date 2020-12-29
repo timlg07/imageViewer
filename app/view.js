@@ -3,9 +3,12 @@ window.addEventListener('util-ready', event => {
 
     const view = (function() {
         const imgContainer = document.getElementById('image-container');
-        const canvCheckmark = util.applicationMenu.items[1].submenu.items[3];
-        const npImgMenuItems = util.applicationMenu.items[0].submenu.items;
-        const fitSizeMenuItem = util.applicationMenu.items[1].submenu.items[1].submenu.items[0];
+        const menuItemIds = ['next', 'prev', 'canvas', 'fitSize'];
+        const menuItems = {};
+
+        menuItemIds.forEach(id => {
+            menuItems[id] = util.applicationMenu.getMenuItemById(id)
+        });
 
         return /* public interface. */ {
             get imageContainerBoundingRect() {
@@ -13,7 +16,7 @@ window.addEventListener('util-ready', event => {
             },
 
             set useCanvas(useCanvasEnabled) {
-                canvCheckmark.checked = useCanvasEnabled;
+                menuItems.canvas.checked = useCanvasEnabled;
             },
 
             set displayedImage(newImageElement) {
@@ -40,7 +43,7 @@ window.addEventListener('util-ready', event => {
                     imgContainer.classList.add(classname);
                 }
 
-                fitSizeMenuItem.checked = enabled;
+                menuItems.fitSize.checked = enabled;
             },
 
             addWheelHandler(fn) {
@@ -48,8 +51,8 @@ window.addEventListener('util-ready', event => {
             },
 
             updateNextPrevMenuItems(prev, next) {
-                npImgMenuItems[0].enabled = next;
-                npImgMenuItems[1].enabled = prev;
+                menuItems.next.enabled = next;
+                menuItems.prev.enabled = prev;
             }
         };
     })();

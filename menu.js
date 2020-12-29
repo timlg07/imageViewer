@@ -25,13 +25,15 @@ module.exports = {
             {
                 label: "File",
                 submenu: [
-                    { 
+                    {
                         label: "Next Image",
+                        id: "next",
                         click: () => win.webContents.send(channels.next),
                         accelerator: 'Right'
                     },
                     { 
                         label: "Previous Image",
+                        id: "prev",
                         click: () => win.webContents.send(channels.prev),
                         accelerator: 'Left'
                     },
@@ -49,6 +51,7 @@ module.exports = {
                             {
                                 type: "checkbox",
                                 label: "Fit in window",
+                                id: "fitSize",
                                 click: o => {
                                     o.checked = false; // Setting checked to false sets the checkbox to true, idk why
                                     win.webContents.send(channels.size.fit);
@@ -76,6 +79,7 @@ module.exports = {
                     { 
                         type: "checkbox", 
                         label: "Use Canvas for more detail and sharpness.",
+                        id: "canvas",
                         accelerator: 'D',
                         checked: false,
                         click: () => win.webContents.send(channels.canv)
