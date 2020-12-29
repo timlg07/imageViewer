@@ -44,6 +44,7 @@ function createWindow() {
 
     win.loadFile(files.index);
 
+    win.on("close", () => win.destroy());
     win.on('closed', () => {
         /* Dereference the main window object when terminated. */
         win = null;
