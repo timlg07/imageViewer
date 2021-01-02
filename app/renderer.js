@@ -2,6 +2,7 @@ window.addEventListener('view-ready', event => {
     const { util, view } = event.detail;
 
     function loadImage(imgPath, imgName) {
+        view.updateNextPrevMenuItems(false, false);
         util.updateTitle("Loading.");
         util.loadImage(imgPath, {
             orientation: true,
@@ -12,20 +13,23 @@ window.addEventListener('view-ready', event => {
             currentImageWidth = data.originalWidth;
             scaleCanvas();
             util.updateTitle(imgName);
+            updateNextPrevMenuItems();
         }).catch(r => {
             view.displayedImage = null;
             util.updateTitle("Error loading the image.");
+            updateNextPrevMenuItems();
         });
     }
 
     function loadCurrentImage() {
-        if (currentImageIndex >= images.length) {
-            util.updateTitle("Nothing to view.");
-        } else {
+        if (fileIndexInRange(currentImageIndex)) {
             loadImage(
                 images[currentImageIndex], 
                 fileNames[currentImageIndex]
             );
+        } else {
+            util.updateTitle("Nothing to view.");
+            updateNextPrevMenuItems();
         }
     }
 
@@ -110,7 +114,6 @@ window.addEventListener('view-ready', event => {
     function switchImage(newIndex) {
         if (fileIndexInRange(newIndex)) {
             currentImageIndex = newIndex;
-            updateNextPrevMenuItems();
             loadCurrentImage();
         }
     }
