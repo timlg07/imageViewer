@@ -44,7 +44,15 @@ function createWindow() {
 
     win.loadFile(files.index);
 
+    /*
+     * This is used to avoid a known issue of electron with borderless windows.
+     * The custom-electron-titlebar uses a beforeunload-listener, which causes
+     * a huge delay when closing windows.
+     * - https://github.com/electron/electron/issues/24910
+     * - https://github.com/AlexTorresSk/custom-electron-titlebar/issues/130
+     */
     win.on("close", () => win.destroy());
+
     win.on('closed', () => {
         /* Dereference the main window object when terminated. */
         win = null;
