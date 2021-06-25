@@ -44,7 +44,7 @@
     "homepage": "https://github.com/timlg07/imageViewer#readme",
     "dependencies": {
         "blueimp-load-image": "^5.14.0",
-        "custom-electron-titlebar": "^3.2.5",
+        "custom-electron-titlebar": "latest",
         "electron-localshortcut": "^3.2.1"
     }
 }
