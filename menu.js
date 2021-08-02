@@ -4,6 +4,7 @@ const isMac = (process.platform === 'darwin');
 const channels = {
     next: 'switchToNextImage',
     prev: 'switchToPrevImage',
+    copy: 'copyImgToClipboard',
     canv: 'toggleCanvasMode',
     size: {
         src: 'setSizeToSource',
@@ -36,6 +37,13 @@ module.exports = {
                         id: "prev",
                         click: () => win.webContents.send(channels.prev),
                         accelerator: 'Left'
+                    },
+                    { type: "separator" },
+                    {
+                        label: "Copy image to clipboard",
+                        id: "copy",
+                        click: () => win.webContents.send(channels.copy),
+                        accelerator: 'C'
                     },
                     { type: "separator" },
                     { role: (isMac ? "close" : "quit") }
