@@ -110,11 +110,13 @@ window.addEventListener('view-ready', event => {
         }
 
         const fileNames = supportedFiles.map(v => util.getFileName(v));
-        const fileURLs  = supportedFiles.map(util.getAbsolutePath).map(util.handleSlashes).map(util.encodeChars);
+        const fileURLs  = supportedFiles.map(util.getAbsolutePath);
+        const fileURLEncoded = fileURLs.map(util.handleSlashes).map(util.encodeChars);
 
         return {
             names: fileNames,
-            urls: fileURLs
+            urls: fileURLEncoded,
+            urlsNotEncoded: fileURLs
         };
     }
     
@@ -136,7 +138,7 @@ window.addEventListener('view-ready', event => {
     }
 
 
-    let images, fileNames,
+    let images, fileNames, imagesNotEncoded
         useCanvas = false, 
         ctrlKeyDown = false,
         autoFitSize = true,
@@ -150,6 +152,7 @@ window.addEventListener('view-ready', event => {
         const supportedFilesFromArguments = scanFiles(util.arguments);
         images = supportedFilesFromArguments.urls;
         fileNames = supportedFilesFromArguments.names;
+        imagesNotEncoded = supportedFilesFromArguments.urlsNotEncoded;
     })();
 
     updateNextPrevMenuItems();
@@ -170,7 +173,7 @@ window.addEventListener('view-ready', event => {
         },
 
         copyImgToClipboard() {
-            util.writeImgToClipboard(images[currentImageIndex]);
+            util.writeImgToClipboard(imagesNotEncoded[currentImageIndex]);
         },
         
         toggleCanvasMode() {
