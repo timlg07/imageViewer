@@ -1,6 +1,7 @@
 const { Titlebar, Themebar } = require('custom-electron-titlebar');
 const { remote, ipcRenderer } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const loadImage = require('blueimp-load-image');
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -51,6 +52,13 @@ window.addEventListener('DOMContentLoaded', () => {
             /* Get the extension of the file, remove the leading dot and force only lowercase characters. */
             const ext = path.extname(filepath).slice(1).toLowerCase();
             return ext && supportedExtensions.indexOf(ext) >= 0;
+        },
+
+        getAllFilesInSameDir(filepath) {
+            const dirpath = path.resolve(__dirname, path.dirname(filepath));
+            const filenames = fs.readdirSync(dirpath);
+            const absolutPaths = filenames.map(f => path.resolve(dirpath, f));
+            return absolutPaths;
         },
 
         loadImage: loadImage,

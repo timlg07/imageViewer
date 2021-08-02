@@ -101,7 +101,14 @@ window.addEventListener('view-ready', event => {
     }
 
     function scanFiles(files) {
-        const supportedFiles = files.filter(util.isImage);
+        let supportedFiles = files.filter(util.isImage);
+
+        // If only one file is given, add everything else in the same dir as well.
+        if (supportedFiles.length === 1) {
+            const otherFiles = util.getAllFilesInSameDir(supportedFiles[0]);
+            supportedFiles = supportedFiles.concat(otherFiles.filter(util.isImage));
+        }
+
         const fileNames = supportedFiles.map(v => util.getFileName(v));
         const fileURLs  = supportedFiles.map(util.handleSlashes).map(util.encodeChars);
 
