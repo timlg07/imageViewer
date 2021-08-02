@@ -1,5 +1,5 @@
 const { Titlebar, Themebar } = require('custom-electron-titlebar');
-const { remote, ipcRenderer } = require('electron');
+const { remote, ipcRenderer, clipboard } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const loadImage = require('blueimp-load-image');
@@ -55,10 +55,18 @@ window.addEventListener('DOMContentLoaded', () => {
         },
 
         getAllFilesInSameDir(filepath) {
-            const dirpath = path.resolve(__dirname, path.dirname(filepath));
+            const dirpath = this.getAbsolutePath(path.dirname(filepath));
             const filenames = fs.readdirSync(dirpath);
             const absolutPaths = filenames.map(f => path.resolve(dirpath, f));
             return absolutPaths;
+        },
+
+        getAbsolutePath(filepath) {
+            return path.resolve(__dirname, filepath);
+        },
+
+        writeImgToClipboard(img) {
+            clipboard.writeImage(img);
         },
 
         loadImage: loadImage,

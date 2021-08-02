@@ -110,7 +110,7 @@ window.addEventListener('view-ready', event => {
         }
 
         const fileNames = supportedFiles.map(v => util.getFileName(v));
-        const fileURLs  = supportedFiles.map(util.handleSlashes).map(util.encodeChars);
+        const fileURLs  = supportedFiles.map(util.getAbsolutePath).map(util.handleSlashes).map(util.encodeChars);
 
         return {
             names: fileNames,
@@ -167,6 +167,10 @@ window.addEventListener('view-ready', event => {
 
         switchToPrevImage() {
             switchImage(currentImageIndex - 1);
+        },
+
+        copyImgToClipboard() {
+            util.writeImgToClipboard(images[currentImageIndex]);
         },
         
         toggleCanvasMode() {
