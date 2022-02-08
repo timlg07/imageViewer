@@ -11,7 +11,7 @@
         "demo2": "electron . ..\\images\\2.JPG"
     },
     "devDependencies": {
-        "electron": "latest",
+        "electron": "13.3",
         "electron-builder": "latest",
         "electron-packager": "latest"
     },
@@ -45,7 +45,7 @@
     "homepage": "https://github.com/timlg07/imageViewer#readme",
     "dependencies": {
         "blueimp-load-image": "^5.14.0",
-        "custom-electron-titlebar": "latest",
+        "custom-electron-titlebar": "3.2.7",
         "electron-localshortcut": "^3.2.1"
     }
 }
