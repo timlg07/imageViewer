@@ -32,21 +32,28 @@ module.exports = {
                         click: () => win.webContents.send(channels.next),
                         accelerator: 'Right'
                     },
-                    { 
+                    {
                         label: "Previous Image",
                         id: "prev",
                         click: () => win.webContents.send(channels.prev),
                         accelerator: 'Left'
                     },
-                    { type: "separator" },
+                    {
+                        type: "separator"
+                    },
                     {
                         label: "Copy image to clipboard",
                         id: "copy",
                         click: () => win.webContents.send(channels.copy),
                         accelerator: 'C'
                     },
-                    { type: "separator" },
-                    { role: (isMac ? "close" : "quit") }
+                    {
+                        type: "separator"
+                    },
+                    {
+                        role: (isMac ? "close" : "quit"),
+                        accelerator: 'Ctrl+W'
+                    }
                 ]
             },
             {
@@ -83,17 +90,23 @@ module.exports = {
                             }
                         ]
                     },
-                    { type: "separator" },
-                    { 
-                        type: "checkbox", 
+                    {
+                        type: "separator"
+                    },
+                    {
+                        type: "checkbox",
                         label: "Use Canvas for more detail and sharpness.",
                         id: "canvas",
                         accelerator: 'D',
                         checked: false,
                         click: () => win.webContents.send(channels.canv)
                     },
-                    { type: "separator" },
-                    { role: "toggleDevTools" }
+                    {
+                        type: "separator"
+                    },
+                    {
+                        role: "toggleDevTools"
+                    }
                 ]
             }
         ];
