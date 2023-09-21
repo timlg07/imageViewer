@@ -11,7 +11,7 @@
         "demo2": "electron . ..\\images\\2.JPG"
     },
     "devDependencies": {
-        "electron": "13.3",
+        "electron": "26.2",
         "electron-builder": "latest",
         "electron-packager": "latest"
     },
