@@ -57,7 +57,8 @@ window.addEventListener('DOMContentLoaded', () => {
         getAllFilesInSameDir(filepath) {
             const dirpath = this.getAbsolutePath(path.dirname(filepath));
             const filenames = fs.readdirSync(dirpath);
-            const absolutPaths = filenames.map(f => path.resolve(dirpath, f));
+            const sortedFilenames = filenames.sort((a, b) => a.localeCompare(b));
+            const absolutPaths = sortedFilenames.map(f => path.resolve(dirpath, f));
             return absolutPaths;
         },
 
