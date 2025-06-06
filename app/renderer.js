@@ -105,8 +105,15 @@ window.addEventListener('view-ready', event => {
 
         // If only one file is given, add everything else in the same dir as well.
         if (supportedFiles.length === 1) {
-            const otherFiles = util.getAllFilesInSameDir(supportedFiles[0]);
-            supportedFiles = supportedFiles.concat(otherFiles.filter(util.isImage));
+            const f = supportedFiles[0];
+            const otherFiles = util.getAllFilesInSameDir(f);
+            supportedFiles = otherFiles.filter(util.isImage);
+
+            if (supportedFiles.indexOf(f) >= 0) {
+                currentImageIndex = supportedFiles.indexOf(f);
+            } else {
+                supportedFiles.unshift(f);
+            }
         }
 
         const fileNames = supportedFiles.map(v => util.getFileName(v));
