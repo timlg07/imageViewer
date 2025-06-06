@@ -1,6 +1,6 @@
 {
     "name": "imageviewer",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "A solid, minimalistic and fast image viewer. Implemented as electron app.",
     "main": "main.js",
     "scripts": {
