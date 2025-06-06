@@ -57,7 +57,17 @@ window.addEventListener('DOMContentLoaded', () => {
         getAllFilesInSameDir(filepath) {
             const dirpath = this.getAbsolutePath(path.dirname(filepath));
             const filenames = fs.readdirSync(dirpath);
-            const sortedFilenames = filenames.sort((a, b) => a.localeCompare(b));
+            const sortedFilenames = filenames.sort((a, b) => {
+                // check if both filenames are only containing numbers
+                const aIsNumber = /^\d+\.[^.]+$/.test(a);
+                const bIsNumber = /^\d+\.[^.]+$/.test(b);
+                // if both are numbers, sort them numerically
+                if (aIsNumber && bIsNumber) {
+                    return parseInt(a) - parseInt(b);
+                }
+                // normal string comparison
+                return a.localeCompare(b);
+            });
             const absolutPaths = sortedFilenames.map(f => path.resolve(dirpath, f));
             return absolutPaths;
         },
