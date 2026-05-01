@@ -100,6 +100,30 @@ window.addEventListener('view-ready', event => {
         }
     }
 
+    function deleteCurrentImage() {
+        if (!fileIndexInRange(currentImageIndex)) return;
+
+        const fileToDelete = imagesNotEncoded[currentImageIndex];
+        const res = util.moveToTrash(fileToDelete);
+
+        if (!res || !res.ok) {
+            util.updateTitle('Error deleting file: ' + (res && res.error ? res.error : 'unknown'));
+            return;
+        }
+
+        // Remove from lists
+        images.splice(currentImageIndex, 1);
+        fileNames.splice(currentImageIndex, 1);
+        imagesNotEncoded.splice(currentImageIndex, 1);
+
+        // Adjust index
+        if (currentImageIndex >= images.length) {
+            currentImageIndex = images.length - 1;
+        }
+
+        loadCurrentImage();
+    }
+
     function scanFiles(files) {
         let supportedFiles = files.filter(util.isImage);
 
@@ -137,7 +161,8 @@ window.addEventListener('view-ready', event => {
     function updateNextPrevMenuItems() {
         const prevInRange = fileIndexInRange(currentImageIndex - 1);
         const nextInRange = fileIndexInRange(currentImageIndex + 1);
-        view.updateNextPrevMenuItems(prevInRange, nextInRange);
+        const deleteEnabled = images && images.length > 0;
+        view.updateNextPrevMenuItems(prevInRange, nextInRange, deleteEnabled);
     }
     
     function fileIndexInRange(index) {
@@ -209,6 +234,10 @@ window.addEventListener('view-ready', event => {
         
         zoomOut() {
             applyZoom(-zoomDelta);
+        }
+        ,
+        deleteImage() {
+            deleteCurrentImage();
         }
     };
 

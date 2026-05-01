@@ -82,6 +82,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
         loadImage: loadImage,
         ipcRenderer: ipcRenderer
+        ,
+        moveToTrash(filepath) {
+            try {
+                const folder = path.dirname(filepath);
+                const trashDir = path.join(folder, 'trash');
+                if (!fs.existsSync(trashDir)) {
+                    fs.mkdirSync(trashDir, { recursive: true });
+                }
+
+                const filename = path.basename(filepath);
+                let dest = path.join(trashDir, filename);
+                // If file exists in trash, append timestamp to avoid collision
+                if (fs.existsSync(dest)) {
+                    const ts = Date.now();
+                    dest = path.join(trashDir, `${ts}_${filename}`);
+                }
+
+                fs.renameSync(filepath, dest);
+                return { ok: true, dest };
+            } catch (err) {
+                return { ok: false, error: err && err.message ? err.message : String(err) };
+            }
+        }
     }
 
     const utilReadyEvent = new CustomEvent('util-ready', {detail: {

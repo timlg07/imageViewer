@@ -6,6 +6,7 @@ const channels = {
     prev: 'switchToPrevImage',
     copy: 'copyImgToClipboard',
     canv: 'toggleCanvasMode',
+    delete: 'deleteImage',
     size: {
         src: 'setSizeToSource',
         fit: 'setSizeToFitWin',
@@ -49,6 +50,12 @@ module.exports = {
                     },
                     {
                         type: "separator"
+                    },
+                    {
+                        label: "Delete Image",
+                        id: "delete",
+                        click: () => win.webContents.send(channels.delete),
+                        accelerator: 'Delete'
                     },
                     {
                         role: (isMac ? "close" : "quit"),

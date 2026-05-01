@@ -3,7 +3,7 @@ window.addEventListener('util-ready', event => {
 
     const view = (function() {
         const imgContainer = document.getElementById('image-container');
-        const menuItemIds = ['next', 'prev', 'canvas', 'fitSize'];
+        const menuItemIds = ['next', 'prev', 'canvas', 'fitSize', 'delete'];
         const menuItems = {};
 
         menuItemIds.forEach(id => {
@@ -50,9 +50,12 @@ window.addEventListener('util-ready', event => {
                 imgContainer.addEventListener('wheel', fn);
             },
 
-            updateNextPrevMenuItems(prev, next) {
+            updateNextPrevMenuItems(prev, next, deleteEnabled) {
                 menuItems.next.enabled = next;
                 menuItems.prev.enabled = prev;
+                if (typeof deleteEnabled !== 'undefined') {
+                    menuItems.delete.enabled = deleteEnabled;
+                }
             }
         };
     })();
